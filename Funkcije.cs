@@ -14,9 +14,10 @@ namespace Poligon2024
 {
     internal class Funkcije
     {
+        public static char[] alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
         public static Poligon Unos()
         {
-            char[] alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+            
             Console.WriteLine("Unesite broj temena: ");
             int n;
             n = Convert.ToInt32(Console.ReadLine());

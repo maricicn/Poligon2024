@@ -91,8 +91,15 @@ namespace Poligon2024
         }
         public Poligon KonveksniOmotac()
         {
-            if (Konveksan()) return this;
-
+            if (Konveksan())
+            {
+                Console.WriteLine("Indexi tacaka koje cine konveksni omotac su:");
+                for (int i = 0; i < broj_temena; i++)
+                {
+                    Console.WriteLine(i);
+                }
+                return this;
+            }
             double pom_x = teme[0].x;
             double pom_y = teme[0].y;
             for (int i = 1; i < broj_temena; i++)
@@ -113,41 +120,88 @@ namespace Poligon2024
                     }
                 }
             }
-            
+
             Tacka prva = new Tacka(pom_x, pom_y);
+            
             int index1 = 0;
-            for(int i = 0; i < broj_temena; i++)
+            for (int i = 0; i < broj_temena; i++)
             {
-                if ((teme[i].x == pom_x) && (teme[i].y == pom_y)){
+                if ((teme[i].x == pom_x) && (teme[i].y == pom_y)) {
                     index1 = i;
                 }
             }
-            Console.WriteLine("Pobedio {0}", index1);
+            //Console.WriteLine("Pobedio {0}", index1);
             List<Tacka> omotac = new List<Tacka>();
             omotac.Add(teme[index1]);
+            Tacka[] SortTeme = new Tacka[broj_temena];
+            for(int i = 0; i < broj_temena; i++)
+            {
+                SortTeme[i] = teme[(index1 + i) % broj_temena];
+                //Console.WriteLine("Teme x: {0}, Teme y: {1}", SortTeme[i].x, SortTeme[i].y);
+            }
+            index1 = 0;
             double min_ugao = 90;
             int index2 = 0;
+            List<int> indexi = new List<int>();
             for (int i = 1; i < broj_temena; i++)
             {
-                double pomx = teme[(index1 + i) % broj_temena].x - teme[index1].x;
-                double pomy = teme[(index1 + i) % broj_temena].y - teme[index1].y;
+                double pomx = SortTeme[(index1 + i) % broj_temena].x - SortTeme[index1].x;
+                double pomy = SortTeme[(index1 + i) % broj_temena].y - SortTeme[index1].y;
                 double pomugao = Math.Atan2(pomy, pomx);
                 if (pomugao < min_ugao)
                 {
                     min_ugao = pomugao;
                     index2 = (index1 + i) % broj_temena;
                 }
+
             }
-            Console.WriteLine("Izabrana {0}", index2);
-            omotac.Add(teme[index2]);
-            List<int> indexi = new List<int>();
-            indexi.Add(index2);
+            for(int i = index2; i > 0; i--)
+            {
+                indexi.Add(i);
+            }
+            //indexi.Add(index2);
+            //Console.WriteLine("Izabrana {0}", Array.IndexOf(teme, SortTeme.ElementAt(index2)));
+            omotac.Add(SortTeme[index2]);
+            /*
+            Tacka[] SortiranoTeme = new Tacka[broj_temena];
+            for(int i = 0; i < broj_temena; i++)
+            {
+                SortiranoTeme[i] = teme[(index2 + i) % broj_temena];
+            }
+            index2 = 0;
+            for (int i = 0; i < broj_temena; i++)
+            {
+                if ((SortiranoTeme[i].x == pom_x) && (SortiranoTeme[i].y == pom_y))
+                {
+                    index1 = i;
+                   
+                }
+            }
+            Console.WriteLine("Nakon sortiranog niza index prvog je " + index1);
+            */
+            
+            /*if(index1 > index2)
+            {
+                for (int i = index2; i >= 0; i--)
+                {
+                    if (i == index1) continue;
+                    indexi.Add(i);
+                }
+            }
+            else if(index2 > index1)
+            {
+                for (int i = index2; i >= index1; i--)
+                {
+                    if (i == index1) continue;
+                    indexi.Add(i);
+                }
+            }*/
             
             while (index2 != index1)
             {
                 min_ugao = 180;
                 int index3 = 0;
-                Tacka pom = teme[index2];
+                Tacka pom = SortTeme[index2];
                 /*
                 for (int brojac = index2 + 1; brojac != index1; brojac = ((brojac + 1) % broj_temena))
                 {
@@ -165,16 +219,16 @@ namespace Poligon2024
                 omotac.Add(teme[index3]);
                 index2 = index3;
                 */
-                for(int i = index2 + 1; i < broj_temena; i++)
+                for(int i = index2 + 1; i <= broj_temena; i++)
                 {
-                    if (indexi.Contains(i)) continue;
-                    Tacka kraj = teme[(i) % broj_temena];
+                    if (indexi.Contains(i % broj_temena)) continue;
+                    Tacka kraj = SortTeme[i % broj_temena];
                     double temp_ugao = 0;
                     double temp_x = kraj.x - pom.x;
                     double temp_y = kraj.y - pom.y;
-                    if (kraj.y < pom.y)
+                    if (kraj.y < pom.y && kraj.x < pom.x)
                     {
-                        temp_ugao = Math.PI - Math.Atan2(temp_y, temp_x);
+                        temp_ugao = 2 * Math.PI + Math.Atan2(temp_y, temp_x);
                     }
                     else
                     {
@@ -183,14 +237,38 @@ namespace Poligon2024
                     if (temp_ugao < min_ugao)
                     {
                         min_ugao = temp_ugao;
-                        index3 = (i) % broj_temena;
+                        index3 = i % broj_temena;
                     }
-                    
+
                 }
-                Console.WriteLine("Dodajem: {0}", index3);
+                for (int i = index3; i > 0; i--)
+                {
+                    indexi.Add(i);
+                }
+                //Console.WriteLine("Dodajem: {0}", Array.IndexOf(teme, SortTeme.ElementAt(index3)));
                 omotac.Add(teme[index3]);
-                indexi.Add(index3);
+                /*if (index1 > index3)
+                {
+                    for (int i = index3; i >= 0; i--)
+                    {
+                        if (i == index1) continue;
+                        indexi.Add(i);
+                    }
+                }
+                else if (index3 > index1)
+                {
+                    for (int i = index3; i >= index1; i--)
+                    {
+                        if (i == index1) continue;
+                        indexi.Add(i);
+                    }
+                }*/
                 index2 = index3;
+            }
+            Console.WriteLine("Indexi tacaka koje cine konveksni omotac su:");
+            foreach(var T in omotac)
+            {
+                Console.Write(Array.IndexOf(teme, T) + " ");
             }
             return null;
 

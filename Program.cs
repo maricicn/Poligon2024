@@ -65,7 +65,7 @@ namespace Poligon2024
             Poligon poligon = new Poligon();
             while(input != "0")
             { 
-                Console.WriteLine("Izaberite jednu od ponudjenih opcija: \n 1 - Unos Poligona \n 2 - FileSave \n 3 - FileLoad");
+                Console.WriteLine("Izaberite jednu od ponudjenih opcija: \n 1 - Unos Poligona \n 2 - FileSave \n 3 - FileLoad \n 4 - Prost \n 5 - Povrsina \n 6 - Obim \n 7 - Konveksan \n 8 - Tacka Unutra \n 9 - Konveksni omotac \n 0 - Izlaz");
                 input = Console.ReadLine();
                 if (input == "1")
                 {
@@ -84,35 +84,56 @@ namespace Poligon2024
                     if (poligon.Prost()) Console.WriteLine("Poligon je prost");
                     else Console.WriteLine("Poligon nije prost");
                 }
-                else if (input == "5")
+                else if(input == "5")
+                {
+                    if (poligon.Prost()) Console.WriteLine("Povrsina: " + poligon.Povrsina());
+                    else Console.WriteLine("Poligon nije prost");
+                }
+                else if(input == "6")
+                {
+                    if (poligon.Prost()) Console.WriteLine("Obim: " + poligon.Obim());
+                    else Console.WriteLine("Poligon nije prost");
+                }
+                else if(input == "7")
+                {
+                    if (poligon.Prost()) 
+                    {
+                        if (poligon.Konveksan()) Console.WriteLine("Poligon je konveksan");
+                        else Console.WriteLine("Poligon nije konveksan");
+                    } 
+                    else Console.WriteLine("Poligon nije prost");
+                }
+                else if (input == "8")
                 {
                     Console.WriteLine("Unesite tacku koju zelite da proverite");
                     string[] inputs1 = Console.ReadLine().Split();
                     Tacka T = new Tacka(Convert.ToDouble(inputs1[0]), Convert.ToDouble(inputs1[1]));
-                    if (poligon.TPripadaPoligonu(T)) Console.WriteLine("da");
-                    else Console.WriteLine("ne");
+                    if (poligon.TPripadaPoligonu(T)) Console.WriteLine("Tacka se nalazi u poligonu");
+                    else Console.WriteLine("Tacka se ne nalazi u poligonu");
                 }
-                else if (input == "6")
+                else if (input == "9")
                 {
                     poligon.KonveksniOmotac();
                 }
+                Console.WriteLine();
             }
-
-            /*Tacka kraj = new Tacka(-8, 2);
-            Tacka pom = new Tacka(1, -1);
+            
+            
+            /*Tacka kraj = new Tacka(3, 3);
+            Tacka pom = new Tacka(4, 5);
             double temp_x = kraj.x - pom.x;
             double temp_y = kraj.y - pom.y;
             double temp_ugao = 0;
-            if (kraj.x < pom.x)
+            if (kraj.y < pom.y)
             {
-                temp_ugao = Math.Atan2(temp_y, temp_x);
+                temp_ugao = 2*Math.PI + Math.Atan2(temp_y, temp_x);
             }
             else
             {
                 temp_ugao = Math.Atan2(temp_y, temp_x);
             }
             Console.WriteLine(temp_ugao);*/
-
+            
 
 
 
